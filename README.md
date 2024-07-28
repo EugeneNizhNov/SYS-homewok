@@ -1,2 +1,3 @@
-## SYS-homewok
-### 1. Домашнее задание к занятию «Работа с данными (DDL/DML)» [ссылка на работу](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/(DDL_DML))
+## Домашние задания по курсу системный администратор
+### 1. Реляционные базы данных и администрирование баз данных.
+1.1 [Домашнее задание к занятию «Работа с данными (DDL/DML)»](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/(DDL_DML))
