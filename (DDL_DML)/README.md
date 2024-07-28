@@ -26,9 +26,17 @@
 
 1.3. Выполните запрос на получение списка пользователей в базе данных. (скриншот)
 
+### Ответ:
+
+![Task1](img/Screenshot_1.jpg)
+
 1.4. Дайте все права для пользователя sys_temp. 
 
 1.5. Выполните запрос на получение списка прав для пользователя sys_temp. (скриншот)
+
+### Ответ:
+
+![Task1](img/Screenshot_2.jpg)
 
 1.6. Переподключитесь к базе данных от имени sys_temp.
 
@@ -38,11 +46,39 @@ ALTER USER 'sys_test'@'localhost' IDENTIFIED WITH mysql_native_password BY 'pass
 ```
 1.6. По ссылке https://downloads.mysql.com/docs/sakila-db.zip скачайте дамп базы данных.
 
+### Ответ:
+
+![Task3](img/Screenshot_3.jpg)
+
 1.7. Восстановите дамп в базу данных.
 
 1.8. При работе в IDE сформируйте ER-диаграмму получившейся базы данных. При работе в командной строке используйте команду для получения всех таблиц базы данных. (скриншот)
 
+### Ответ:
+
+![Task4](img/Screenshot_4.jpg)
+
 *Результатом работы должны быть скриншоты обозначенных заданий, а также простыня со всеми запросами.*
+
+```
+eugene@mysql:~/mysql/data/sakila-db$ sudo docker exec -it db_mysql /bin/bash
+bash-5.1# mysql -u root -p
+mysql> CREATE USER 'sys_temp'@'localhost' IDENTIFIED BY 'password';
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'sys_temp'@'localhost';
+mysql> show grants for 'sys_temp'@'localhost';
+mysql> exit
+bash-5.1# mysql -u sys_temp -p
+mysql> select user();
+mysql> exit
+bash-5.1# exit
+eugene@mysql:~/mysql/data/sakila-db$ sudo docker exec -i db_mysql sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD"' < ~/mysql/data/sakila-db/sakila-schema.sql
+eugene@mysql:~/mysql/data/sakila-db$ sudo docker exec -i db_mysql sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD"' < ~/mysql/data/sakila-db/sakila-data.sql
+eugene@mysql:~/mysql/data/sakila-db$ sudo docker exec -it db_mysql /bin/bash
+bash-5.1# mysql -u sys_temp -p
+mysql>  USE sakila;
+mysql> SHOW TABLES;
+```
+
 
 
 ### Задание 2
@@ -50,5 +86,25 @@ ALTER USER 'sys_test'@'localhost' IDENTIFIED WITH mysql_native_password BY 'pass
 ```
 Название таблицы | Название первичного ключа
 customer         | customer_id
+```
+
+```
+actor        |	actor_id
+address      | address_id
+category     | category_id
+city         | city_id
+country      |	country_id
+customer     |	customer_id
+film         | film_id
+film_actor   |	actor_id, film_id
+film_category|	film_id, category_id
+film_text    |	film_id
+inventory    |	inventory_id
+language     | language_id
+payment      |	payment_id
+rental       | rental_id
+staff        | staff_id
+store	       | store_id
+
 ```
 
