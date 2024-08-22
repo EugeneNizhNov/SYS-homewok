@@ -19,6 +19,15 @@
 
 Напишите запрос к учебной базе данных, который вернёт процентное отношение общего размера всех индексов к общему размеру всех таблиц.
 
+```
+SELECT ROUND(((SUM(index_length)/SUM(data_length+index_length))*100),2) AS 'Percentage of indexes, %'
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = 'sakila';
+```
+
+![Task1](img/Screenshot_1.jpg)
+
+
 ### Задание 2
 
 Выполните explain analyze следующего запроса:
@@ -29,3 +38,16 @@ where date(p.payment_date) = '2005-07-30' and p.payment_date = r.rental_date and
 ```
 - перечислите узкие места;
 - оптимизируйте запрос: внесите корректировки по использованию операторов, при необходимости добавьте индексы.
+  
+### Решение
+
+После анализа исходного запроса было выявляено, что наиболее узким местом в предлагаемом запросе является то, что оконная функция обрабатывает излишние таблицы а именно inventory, rental и film.  Все необходимые данные есть в таблицах payment и customer, соответственно, остальные таблицы можно исключить. 
+Оптимизированный запрос:
+
+```
+select distinct concat(c.last_name, ' ', c.first_name), sum(p.amount) over (partition by c.customer_id)
+from payment p, customer c
+where date(p.payment_date) = '2005-07-30' AND p.customer_id = c.customer_id  
+```
+
+Actual time исходного запроса составляет 6605, Actual time оптимизированного запроса составляет 9.99.
