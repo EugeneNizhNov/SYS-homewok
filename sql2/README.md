@@ -27,9 +27,14 @@
 - количество пользователей, закреплённых в этом магазине.
 
 ```
-SELECT DISTINCT district 
-FROM address
-WHERE district LIKE 'K%a' AND district NOT LIKE '% %';
+SELECT s.store_id, s2.first_name, s2.last_name, c.city, COUNT(c2.customer_id) AS amaunt
+FROM store s
+JOIN staff s2 ON s2.store_id = s.store_id 
+JOIN address a ON a.address_id = s2.address_id 
+JOIN city c ON c.city_id = a.city_id 
+JOIN customer c2 ON c2.store_id = s.store_id 
+GROUP BY s.store_id, s2.first_name, s2.last_name, c.city
+HAVING amaunt > 300;
 ```
 
 ![Task1](img/Screenshot_1.jpg)
@@ -39,9 +44,8 @@ WHERE district LIKE 'K%a' AND district NOT LIKE '% %';
 Получите количество фильмов, продолжительность которых больше средней продолжительности всех фильмов.
 
 ```
-SELECT DISTINCT district 
-FROM address
-WHERE district LIKE 'K%a' AND district NOT LIKE '% %';
+SELECT COUNT(*) FROM  film f
+WHERE f.`length` > (SELECT  AVG(`length`) FROM film f2);
 ```
 
 ![Task1](img/Screenshot_2.jpg)
@@ -51,9 +55,11 @@ WHERE district LIKE 'K%a' AND district NOT LIKE '% %';
 Получите информацию, за какой месяц была получена наибольшая сумма платежей, и добавьте информацию по количеству аренд за этот месяц.
 
 ```
-SELECT DISTINCT district 
-FROM address
-WHERE district LIKE 'K%a' AND district NOT LIKE '% %';
+SELECT  DATE_FORMAT(p.payment_date, '%Y-%M') AS date, SUM(p.amount) AS 'amount of money', count(p.rental_id ) AS 'number of rents'
+FROM payment p 
+GROUP BY date
+ORDER BY SUM(p.amount) DESC
+limit 1;
 ```
 
 ![Task1](img/Screenshot_3.jpg)
