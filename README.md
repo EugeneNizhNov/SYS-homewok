@@ -5,3 +5,5 @@
 1.2 [Домашнее задание к занятию «SQL. Часть 1»](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/sql1)
 
 1.3 [Домашнее задание к занятию «SQL. Часть 2»](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/sql2)
+
+1.4 [Домашнее задание к занятию «Индексы»]
