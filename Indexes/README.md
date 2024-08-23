@@ -51,3 +51,59 @@ where date(p.payment_date) = '2005-07-30' AND p.customer_id = c.customer_id
 ```
 
 Actual time исходного запроса составляет 6605, Actual time оптимизированного запроса составляет 9.99.
+
+### Дополнение к решению
+
+1. Используя таблицу inventory можно получить данные по фильмам и магазину. Т.к таблицу film мы исключаем, то отпадает неоходимость обращаться к таблице  inventory
+
+![Task2](img/Screenshot_2.jpg)
+
+2. На представленном ниже рисунке, прослеживется связь арендатора, аренды и оплаты. Т.к. в нашем случае мы получаем данные по арендодателю и сколько он  заплатил в определееное время, без запроса на выборку по объектам аренды, то было бы логично не задействовать таблицу rental. Также получить данные какой именно арендатор произвел оплату, можно минуя вышеуказанную таблицу.
+
+![Task3](img/Screenshot_3.jpg)
+
+3. Перепишем запрос
+
+```
+SELECT DISTINCT  concat(c.last_name, ' ', c.first_name) AS FIO, SUM(p.amount)
+FROM payment p 
+JOIN customer c ON c.customer_id = p.customer_id 
+WHERE p.payment_date >= '2005-07-30' and p.payment_date < DATE_ADD('2005-07-30', INTERVAL 1 DAY)
+GROUP BY FIO  
+```
+4. Создадим индекс по полю payment_date
+
+![Task3](img/Screenshot_5.jpg)
+
+5. explain analyze исходного запроса:
+
+```
+
+-> Table scan on <temporary>  (cost=2.5..2.5 rows=0) (actual time=6731..6731 rows=391 loops=1)
+    -> Temporary table with deduplication  (cost=0..0 rows=0) (actual time=6731..6731 rows=391 loops=1)
+        -> Window aggregate with buffering: sum(payment.amount) OVER (PARTITION BY c.customer_id,f.title )   (actual time=3074..6508 rows=642000 loops=1)
+            -> Sort: c.customer_id, f.title  (actual time=3074..3172 rows=642000 loops=1)
+                -> Stream results  (cost=21.1e+6 rows=15.6e+6) (actual time=0.456..2240 rows=642000 loops=1)
+                    -> Nested loop inner join  (cost=21.1e+6 rows=15.6e+6) (actual time=0.451..1881 rows=642000 loops=1)
+                        -> Nested loop inner join  (cost=19.6e+6 rows=15.6e+6) (actual time=0.447..1592 rows=642000 loops=1)
+                            -> Nested loop inner join  (cost=18e+6 rows=15.6e+6) (actual time=0.442..1304 rows=642000 loops=1)
+                                -> Inner hash join (no condition)  (cost=1.54e+6 rows=15.4e+6) (actual time=0.432..58.8 rows=634000 loops=1)
+                                    -> Filter: (cast(p.payment_date as date) = '2005-07-30')  (cost=1.61 rows=15400) (actual time=0.0334..8.92 rows=634 loops=1)
+                                        -> Table scan on p  (cost=1.61 rows=15400) (actual time=0.0211..5.22 rows=16044 loops=1)
+                                    -> Hash
+                                        -> Covering index scan on f using idx_title  (cost=112 rows=1000) (actual time=0.0357..0.275 rows=1000 loops=1)
+                                -> Covering index lookup on r using rental_date (rental_date=p.payment_date)  (cost=0.969 rows=1.01) (actual time=0.00131..0.00175 rows=1.01 loops=634000)
+                            -> Single-row index lookup on c using PRIMARY (customer_id=r.customer_id)  (cost=250e-6 rows=1) (actual time=204e-6..239e-6 rows=1 loops=642000)
+                        -> Single-row covering index lookup on i using PRIMARY (inventory_id=r.inventory_id)  (cost=250e-6 rows=1) (actual time=199e-6..234e-6 rows=1 loops=642000)
+
+```
+
+6. explain analyze модернизированного запроса, в котором используется вновь созданный индекс idx_fk_payment_date:
+
+```
+Table scan on <temporary>  (actual time=2.98..3.03 rows=391 loops=1)
+    -> Aggregate using temporary table  (actual time=2.97..2.97 rows=391 loops=1)
+        -> Nested loop inner join  (cost=507 rows=634) (actual time=0.0409..2.32 rows=634 loops=1)
+            -> Index range scan on p using idx_fk_payment_date over ('2005-07-30 00:00:00' <= payment_date < '2005-07-31 00:00:00'), with index condition: ((p.payment_date >= TIMESTAMP'2005-07-30 00:00:00') and (p.payment_date < <cache>(('2005-07-30' + interval 1 day))))  (cost=286 rows=634) (actual time=0.0289..1.23 rows=634 loops=1)
+            -> Single-row index lookup on c using PRIMARY (customer_id=p.customer_id)  (cost=0.25 rows=1) (actual time=0.00147..0.0015 rows=1 loops=634)
+```
