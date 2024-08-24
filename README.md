@@ -9,4 +9,4 @@
 1.4 [Домашнее задание к занятию «Индексы»](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/Indexes)
 
 ### 2. Системы хранения и передачи данных
-2.1 [Домашнее задание к занятию «Кеширование Redis/memcached»]
+2.1 [Домашнее задание к занятию «Кеширование Redis/memcached»](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/redis)
