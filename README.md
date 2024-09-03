@@ -10,4 +10,5 @@
 
 ### 2. Системы хранения и передачи данных
 2.1 [Домашнее задание к занятию «Кеширование Redis/memcached»](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/redis)
-2.2 [Домашнее задание к занятию «Очереди RabbitMQ»]
+
+2.2 [Домашнее задание к занятию «Очереди RabbitMQ»](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/RabbitMQ)
