@@ -12,3 +12,7 @@
 2.1 [Домашнее задание к занятию «Кеширование Redis/memcached»](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/redis)
 
 2.2 [Домашнее задание к занятию «Очереди RabbitMQ»](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/RabbitMQ)
+
+### 3. Информационная безопасность.
+
+3.1 [Домашнее задание к занятию «Уязвимости и атаки на информационные системы»](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/Metasploitable)
