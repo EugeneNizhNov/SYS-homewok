@@ -1,0 +1,9 @@
+#cloud-config
+users:
+  - name: eugene
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC2Vo7nfOzRn32NWdOJvx8XWI2N78COx3A/9QhmEsZB7lJa7gv/++zOdm1VY+ATr5MwH38SSkHyCP7UFe+DzkjnzVcw7Ny9z53QN4ZPBeGv1EYLAZhk652t8OZuGZhyM8ITE/+VMS1BNOzlDvBDis657e9m0ENGqrhVvavvlCciGlvUWb+lwRIj5cSIzcMp2JnJkDbcRMQ0248aTVa0nhlsdagLGLkgw65+figiuKos7cQZMnKsgbm+duzlB3ZTL7O0j8QnSKhu+lnPDDb2PjtPx1RKDHEwXa3KwmKoRajCdSPi+eosUYgGEVhYFgYlxED9sdc1IcCOetXJpkc6MFB/SJgYUhj/2v/CjGw06gR++X3ZkJvxrCBlyyIeE2g2WEpQlmLiFsQL3Js320bOuPB9G9H0xCQuj7j7+98gKXjsodbAjcysR1tHEwwcYSGxZtb2Fa1ZVT1X0GBEtIv6QFBxy1TKhbtNbMhNla0ETZ7kMnd1o3x5hl0hLbMqy8FIWQ8= eugene@diplom
+   
