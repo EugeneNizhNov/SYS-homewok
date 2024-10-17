@@ -18,3 +18,7 @@
 3.1 [Домашнее задание к занятию «Уязвимости и атаки на информационные системы»](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/Metasploitable)
 
 3.2 [Домашнее задание к занятию «Защита сети»](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/network%20protection)
+
+### 4. Итоговая работа.
+
+4.1 [Дипломная работа по профессии «Системный администратор»] ()
