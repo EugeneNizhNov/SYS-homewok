@@ -69,3 +69,78 @@ Cоздайте ВМ, разверните на ней Elasticsearch. Устан
 
 ### Резервное копирование
 Создайте snapshot дисков всех ВМ. Ограничьте время жизни snaphot в неделю. Сами snaphot настройте на ежедневное копирование.
+
+---
+
+## Ход выполнения
+
+## Terraform
+
+Настройка и "подъем" инфраструктуры в Yandex Cloud осуществлялось с ипользованием terraform.
+В целях безопасности параметры service_account, cloud_id и folder_id скрываем за переменными.
+Конфигурацию полученной инфраструктуры проверяем коммандой terraform plan, и если нет ошибок, то комамандой terraform apply запускаем процесс развертывания инфраструктуры в облаке.
+По заевершению процееса получаем данные output, которые ранее были прописаны в файле output.tf
+```
+FQDN_bastion = "bastion.ru-central1.internal"
+FQDN_elastic = "elastic.ru-central1.internal"
+FQDN_kibana = "kibana.ru-central1.internal"
+FQDN_web-srv-1 = "web1.ru-central1.internal"
+FQDN_web-srv-2 = "web2.ru-central1.internal"
+FQDN_zabbix = "zabbix.ru-central1.internal"
+external_ip_address_bastion = "158.160.9.73"
+external_ip_address_kibana = "51.250.106.126"
+external_ip_address_web-balancer = tolist([
+  {
+    "address" = "84.252.132.197"
+  },
+])
+external_ip_address_zabbix = "158.160.68.80"
+internal_ip_address_bastion = "10.128.4.15"
+internal_ip_address_elastic = "10.128.3.10"
+internal_ip_address_kibana = "10.128.4.11"
+internal_ip_address_web-srv-1 = "10.128.1.10"
+internal_ip_address_web-srv-2 = "10.128.2.10"
+internal_ip_address_zabbix = "10.128.4.10"
+```
+На основании этих данный быыл сформирован файл инвентаря hosts для ansible
+
+Проверяем созданную инфраструктуру
+
+Созданы необходимые виртуальные машины
+![Task1](img/ter1.jpg)
+
+Создана сеть и 5 подсетей
+![Task1](img/ter2.jpg)
+
+Созданы группы безопасности
+![Task1](img/ter3.jpg)
+
+Создан балансировщик нагрузки web-balancer
+![Task1](img/ter4.jpg)
+![Task1](img/ter5.jpg)
+![Task1](img/ter6.jpg)
+
+Создано расписание снимков дисков
+![Task1](img/ter7.jpg)
+
+## Ansible
+После команды ansible -m ping all убеждаюсь что все хосты доступны.
+![Task2](img/dip1.jpg)
+
+Используя playbook'и устанавливаем оснастку серверов.
+![Task2](img/dip2.jpg)
+![Task2](img/dip3.jpg)
+![Task2](img/dip4.jpg)
+![Task2](img/dip5.jpg)
+![Task2](img/dip6.jpg)
+
+## Доступность ресурсов
+
+Проверяю доступность серверов с nginx через балансировщик
+![Task3](img/ext1.jpg)
+
+Проверка раотоспособности zabbix-сервера
+![Task3](img/ext2.jpg)
+
+Развернута Kibana, на которую приходят через Elasticsearch логи от веб-серверов
+![Task3](img/ext3.jpg)
