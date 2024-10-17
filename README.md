@@ -21,4 +21,4 @@
 
 ### 4. Итоговая работа.
 
-4.1 [Дипломная работа по профессии «Системный администратор»] (https://github.com/EugeneNizhNov/SYS-homewok/tree/main/diplom)
+4.1 [Дипломная работа по профессии «Системный администратор»](https://github.com/EugeneNizhNov/SYS-homewok/tree/main/diplom)
