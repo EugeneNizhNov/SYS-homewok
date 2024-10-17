@@ -1,0 +1,6 @@
+- hosts: web3
+  tasks:
+    - name:
+      command: df -h
+      register: storage
+    - debug: var=storage.stdout_lines

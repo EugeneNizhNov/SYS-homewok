@@ -1,0 +1,19 @@
+[web]
+web1 ansible_host=web1.ru-central1.internal
+web2 ansible_host=web2.ru-central1.internal
+
+[mon]
+zab ansible_host=zabbix.ru-central1.internal
+
+[log]
+kib ansible_host=kibana.ru-central1.internal
+elastik ansible_host=elastic.ru-central1.internal
+
+[bastion_server]
+bastion ansible_host=10.128.4.15
+
+
+[all:vars]
+ansible_user=eugene
+ansible_ssh_private_key_file=/home/eugene/.ssh/id_rsa
+ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ProxyCommand="ssh -p 22 -W %h:%p -q eugene@158.160.9.73"'

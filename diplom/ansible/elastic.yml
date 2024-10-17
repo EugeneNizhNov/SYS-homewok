@@ -1,0 +1,23 @@
+---
+- hosts: elastik
+  become: yes
+  gather_facts: true
+  tasks:
+    - name:  elastic installation 
+      apt:
+        deb: http://mirror.yandex.ru/mirrors/elastic/7/pool/main/e/elasticsearch/elasticsearch-7.17.14-amd64.deb
+        
+    - name: copy elasticsearch config
+      template:
+        src: /home/eugene/diplom/ansible/elastic.conf
+        dest: /etc/elasticsearch/elasticsearch.yml
+        
+    - name: demon reloading
+      systemd_service:
+        daemon_reload: true
+
+    - name: restart elastic
+      service:
+        name: elasticsearch
+        state: restarted
+        enabled: true

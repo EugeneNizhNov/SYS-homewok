@@ -1,0 +1,39 @@
+---
+- hosts: web
+  become: yes
+  tasks:
+    - name:  zabbix loading repository 
+      shell: wget https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2+ubuntu24.04_all.deb
+      args:
+        chdir: /tmp
+
+    - name: zabbix repository installation 
+      shell: dpkg -i zabbix-release_7.0-2+ubuntu24.04_all.deb
+      args:
+        chdir: /tmp
+
+    - name: Updating packages
+      apt:
+        update_cache: yes
+
+    - name: install Zabbix agent
+      apt:
+        name: 
+          - zabbix-agent
+        state: present
+      
+    - name: Ensure SELinux is set to enforcing mode
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - {regexp: 'Server=', line: Server=10.128.4.10}
+        - {regexp: 'ServerActive=', line: ServerActive=10.128.4.10}
+        - {regexp: 'Hostname=', line: Hostname=zabix}
+    
+    - name: restart Zabbix agent
+      service:
+        name: zabbix-agent
+        state: restarted
+        enabled: true

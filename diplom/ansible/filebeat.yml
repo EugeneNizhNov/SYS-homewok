@@ -1,0 +1,24 @@
+---
+- name: Установка Filebeat
+  hosts: web
+  become: yes
+  gather_facts: true
+  tasks:
+  - name: Устанавливаем filebeat
+    apt:
+      deb: http://mirror.yandex.ru/mirrors/elastic/7/pool/main/f/filebeat/filebeat-7.17.4-amd64.deb
+
+  - name: Копируем конфиг filebeat
+    template:
+      src: /home/eugene/diplom/ansible/filebeat.cfg
+      dest: /etc/filebeat/filebeat.yml
+
+  - name: daemon_reload
+    systemd:
+      daemon_reload: true
+
+  - name: Перезапускаем filebeat и добавляем в автозагрузку
+    service:
+      name: filebeat
+      state: restarted
+      enabled: yes

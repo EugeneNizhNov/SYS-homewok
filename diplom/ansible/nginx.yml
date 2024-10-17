@@ -1,0 +1,22 @@
+---
+- hosts: web
+  become: yes
+     
+  tasks:
+    - name: istall nginx
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+    - name: Generate index.html
+      template:
+        src: /home/eugene/diplom/ansible/nginx.index.html.j2
+        dest: /var/www/html/index.html
+      notify: Restart Nginx
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
