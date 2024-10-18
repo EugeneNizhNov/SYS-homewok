@@ -87,14 +87,14 @@ FQDN_kibana = "kibana.ru-central1.internal"
 FQDN_web-srv-1 = "web1.ru-central1.internal"
 FQDN_web-srv-2 = "web2.ru-central1.internal"
 FQDN_zabbix = "zabbix.ru-central1.internal"
-external_ip_address_bastion = "158.160.9.73"
-external_ip_address_kibana = "51.250.106.126"
+external_ip_address_bastion = "158.160.70.173"
+external_ip_address_kibana = "158.160.65.184"
 external_ip_address_web-balancer = tolist([
   {
     "address" = "84.252.132.197"
   },
 ])
-external_ip_address_zabbix = "158.160.68.80"
+external_ip_address_zabbix = "89.169.173.186"
 internal_ip_address_bastion = "10.128.4.15"
 internal_ip_address_elastic = "10.128.3.10"
 internal_ip_address_kibana = "10.128.4.11"
