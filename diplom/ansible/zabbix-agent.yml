@@ -28,8 +28,8 @@
         regexp: "{{ item.regexp }}"
         line: "{{ item.line }}"
       loop:
-        - {regexp: 'Server=', line: Server=10.128.4.10}
-        - {regexp: 'ServerActive=', line: ServerActive=10.128.4.10}
+        - {regexp: 'Server=', line: Server=zabbix.ru-central1.internal}
+        - {regexp: 'ServerActive=', line: ServerActive=zabbix.ru-central1.internal}
         - {regexp: 'Hostname=', line: Hostname=zabix}
     
     - name: restart Zabbix agent
