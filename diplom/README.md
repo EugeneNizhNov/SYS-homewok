@@ -123,6 +123,9 @@ internal_ip_address_zabbix = "10.128.4.10"
 Создано расписание снимков дисков
 ![Task1](img/ter7.jpg)
 
+Снимки дисков
+![Task1](img/ter7_1.jpg)
+
 ## Ansible
 После команды ansible -m ping all убеждаюсь что все хосты доступны.
 ![Task2](img/dip1.jpg)
